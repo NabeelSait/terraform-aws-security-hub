@@ -217,6 +217,18 @@ variable "compliance_scan_timeout" {
   }
 }
 
+variable "remediation_resource_count" {
+  description = "Maximum number of non-compliant resources each remediation task fixes. Azure's default is 500 and its maximum is 50,000. Raise it for a tenant with more resources per policy than that."
+  type        = number
+  default     = 500
+  nullable    = false
+
+  validation {
+    condition     = var.remediation_resource_count == floor(var.remediation_resource_count) && var.remediation_resource_count >= 1 && var.remediation_resource_count <= 50000
+    error_message = "remediation_resource_count must be a whole number from 1 to 50000."
+  }
+}
+
 variable "remediation_subscription_ids" {
   description = "Subscriptions to register resource providers in and scan for compliance before remediation. Defaults to every enabled subscription in the tenant that the `azurerm` identity can read. The remediation tasks cover every subscription under the tenant root management group; a subscription left out is not scanned, so only resources Azure has already evaluated there are fixed."
   type        = list(string)

@@ -10,7 +10,7 @@ Use it with the [`azure_connector_arm`](../azure\_connector\_arm) module, which 
 
 ## Permissions
 
-The `azuread` provider identity needs Global Administrator or Privileged Role Administrator to grant admin consent. It needs no Azure subscription access, so a directory administrator can apply this module separately from the Azure resources.
+The `azuread` provider identity needs Global Administrator, or both Privileged Role Administrator (to grant admin consent for the Microsoft Graph application permissions) and Application Administrator or Cloud Application Administrator (to create the application registration and service principal). It needs no Azure subscription access, so a directory administrator can apply this module separately from the Azure resources.
 
 ## Usage
 

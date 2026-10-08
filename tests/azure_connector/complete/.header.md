@@ -5,8 +5,8 @@ Onboards an Azure tenant for every pipeline (CSPM, Amazon Inspector and threat d
 ```shell
 terraform init
 terraform apply \
-  -var tenant_id=<tenant id> \
-  -var subscription_id=<subscription id> \
+  -var 'tenant_id=<tenant id>' \
+  -var 'subscription_id=<subscription id>' \
   -var lead_aws_account_id=123456789012 \
   -var 'owner_object_ids=["<your Entra object id>"]' \
   -var 'onboarded_accounts=[{aws_account_id="123456789012",aws_region="us-east-1",issuer_url="https://<id>.tokens.sts.global.api.aws"}]'

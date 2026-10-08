@@ -157,6 +157,13 @@ run "all_pipelines" {
   }
 
   assert {
+    condition = alltrue([
+      for r in azurerm_management_group_policy_remediation.existing_resources : r.resource_count == 500
+    ])
+    error_message = "Remediation tasks must default to Azure's 500-resource count."
+  }
+
+  assert {
     condition     = toset(keys(azapi_resource_action.compliance_scan)) == toset(["aaaaaaaa-0000-0000-0000-000000000001", "aaaaaaaa-0000-0000-0000-000000000002"])
     error_message = "Each enabled subscription in the tenant must be scanned for compliance before remediation."
   }
@@ -201,6 +208,7 @@ run "cspm_only" {
   variables {
     azure_locations              = []
     remediation_subscription_ids = ["aaaaaaaa-0000-0000-0000-000000000001"]
+    remediation_resource_count   = 50000
     register_resource_providers  = false
     onboarded_accounts = [
       {
@@ -230,6 +238,11 @@ run "cspm_only" {
   assert {
     condition     = keys(azurerm_management_group_policy_remediation.existing_resources) == ["activity"] && keys(azapi_resource_action.compliance_scan) == ["aaaaaaaa-0000-0000-0000-000000000001"]
     error_message = "CSPM alone remediates only the activity log assignment, and scans only the listed subscriptions."
+  }
+
+  assert {
+    condition     = azurerm_management_group_policy_remediation.existing_resources["activity"].resource_count == 50000
+    error_message = "remediation_resource_count must set the remediation tasks' resource count."
   }
 
   assert {

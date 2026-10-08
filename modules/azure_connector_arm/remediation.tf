@@ -155,6 +155,7 @@ resource "azurerm_management_group_policy_remediation" "existing_resources" {
   name                 = lower("${local.policy_assignment_names[each.key]}-remediation")
   management_group_id  = local.mg_id
   policy_assignment_id = local.policy_assignment_ids[each.key]
+  resource_count       = var.remediation_resource_count
 
   lifecycle {
     replace_triggered_by = [terraform_data.policy_generation[each.key]]
